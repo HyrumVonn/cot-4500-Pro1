@@ -1,26 +1,28 @@
 import numpy
-
-#assingment 1, question 6 parameters
-# solve f(x) = x^3 + 4x^2 - 10 
-# w/ accuracy < 10^-4, using a = -4, b = 7
-globalA = -4
-globalB = 7
-globalPrecision = pow(10, -4)
-
-#simplified for computer, should be
-# ( x + 4 ) * x^2 - 10
-def f(x):
-    return ( x + 4 ) * pow(x, 2) - 10
+import math
 
 #3x^2 + 8x
 #(3 * x + 8) x
 def derivativeF(x):
     return (3 * x + 8) * x
 
-def ApproximationAlgorithm(a, b, precision):
-    result = 0
+def ApproximationAlgorithm():
+    precision = pow(10, -6)
+    result = 1.5
+    iterations = 0
+    error = precision + 1
+    print(f"{iterations} : {result}")
 
-    return "Approx Alg here"
+    while(error > precision):
+        iterations = iterations + 1
+        y = result
+
+        result = ( result / 2) + ( 1 / result )
+
+        error = numpy.abs(result - y)
+        print(f"{iterations} : {result}")
+
+    return f"\nConvergence after {iterations} iterations"
 
 #returns True if a number is negative
 def isNeg(x):
@@ -37,6 +39,11 @@ def Bisection(a, b, precision):
     error = precision + 1
     left = a
     right = b
+
+    #simplified for computer, should be
+    # ( x + 4 ) * x^2 - 10
+    def f(x):
+        return ( x + 4 ) * pow(x, 2) - 10
 
     while(error > precision):
         iterations = iterations + 1
@@ -58,38 +65,80 @@ def Bisection(a, b, precision):
             #then repeat
             right = result
             error = numpy.abs(midY - lY)
+        
+        print(f"{iterations} : {result}")
 
 
-    return result
+    return f"\nConvergence after {iterations} iterations"
 
-def FixedPointIteration(a, b, precision):
-    result = 0
-    return "Fixed point It"
+def FixedPointIteration():
+    p0 = 1.5
+    maxIterations = 50
+    result = "Failure"
+    iterations = 1
+    precision = .000001
 
-def NewtonRaphson(a, b, precision):
-    result = (a + b) / 2
+    # def g(x):
+    #     return numpy.sqrt(10 - pow(x, 3)) / 2, numpy.sqrt(4)
+
+    def g(x):
+       return x - x * x * x - 4 * x * x + 10, 1.5
+
+    while(iterations <= maxIterations):
+        p, pChecker = g(p0)
+
+        if(math.isnan(p) or (type(p) != type(pChecker))):
+            print(f"\nResult diverges\n")
+            break
+
+        print(f"{iterations} : {p}")
+
+        if(numpy.abs(p - p0) < precision):
+            result = "SUCCESS"
+            break
+        
+        iterations = iterations + 1
+        p0 = p
+
+    return f"{result} after {iterations} iterations"
+
+
+
+def NewtonRaphson(precision):
+    #give a non-zero initial approximation
+    result = numpy.pi / 4
     iterations = 0
 
+    def f(x):
+        return numpy.cos(x) - x
+    
+    def df(x):
+        return (- numpy.sin(x) - 1)
+    
     while(True):
-        iterations = iterations + 1
-        if((derivativeF(result) > 0) or (derivativeF(result) < 0)):
-            nextApprox = result - (f(result) / derivativeF(result))
+        print(f"{iterations}\t{result}")
+        print(f"df Result: {df(result)}")
+        if((df(result) > 0) or (df(result) < 0)):
+            nextApprox = result - (f(result) / df(result))
+
+            print(f"error: {numpy.abs(nextApprox - result)}\nprecision: {precision}\n{numpy.abs(nextApprox - result) < precision}")
 
             if(numpy.abs(nextApprox - result) < precision):
-                return result
+                return
             else:
+                iterations = iterations + 1
                 result = nextApprox
         else:
             return f"Unsuccessful: f'(x) was 0 after {iterations} iterations\n"
 
 #Approximation
-print(f"{ApproximationAlgorithm(globalA, globalB, globalPrecision)}\n")
+print(f"{ApproximationAlgorithm()}\n\n\n")
 
 #Bisection
-print(f"{Bisection(globalA, globalB, globalPrecision)}\n")
+print(f"{Bisection(-4, 7, pow(10, -4))}\n\n\n")
 
 #Fixed-Point Iteration
-print(f"{FixedPointIteration(globalA, globalB, globalPrecision)}\n")
+print(f"{FixedPointIteration()}\n\n\n")
 
 #Newton-Raphson
-print(f"{NewtonRaphson(globalA, globalB, globalPrecision)}\n")
+NewtonRaphson(0.000001)
