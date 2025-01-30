@@ -1,7 +1,7 @@
 Requires: numpy
-if your machine does not have numpy installed (i.e. if you experience failure to compile program) 
+if your machine does not have numpy installed (i.e. if you experience failure to run program) 
 it can be installed by running the command:
 
 pip install numpy
 
-in the your computer's terminal or command line
+in the your computer's terminal or command line. Errors after that may not be related to whether you have numpy installed
