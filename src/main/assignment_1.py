@@ -78,11 +78,11 @@ def FixedPointIteration():
     iterations = 1
     precision = .000001
 
-    # def g(x):
-    #     return numpy.sqrt(10 - pow(x, 3)) / 2, numpy.sqrt(4)
-
     def g(x):
-       return x - x * x * x - 4 * x * x + 10, 1.5
+        return numpy.sqrt(10 - pow(x, 3)) / 2, numpy.sqrt(4)
+
+    # def g(x):
+    #    return x - x * x * x - 4 * x * x + 10, 1.5
 
     while(iterations <= maxIterations):
         p, pChecker = g(p0)
@@ -104,10 +104,11 @@ def FixedPointIteration():
 
 
 
-def NewtonRaphson(precision):
+def NewtonRaphson():
     #give a non-zero initial approximation
-    result = numpy.pi / 4
+    pPrevious = numpy.pi / 4
     iterations = 0
+    precision = 0.000001
 
     def f(x):
         return numpy.cos(x) - x
@@ -116,20 +117,18 @@ def NewtonRaphson(precision):
         return (- numpy.sin(x) - 1)
     
     while(True):
-        print(f"{iterations}\t{result}")
-        print(f"df Result: {df(result)}")
-        if((df(result) > 0) or (df(result) < 0)):
-            nextApprox = result - (f(result) / df(result))
+        print(f"{iterations}\t{pPrevious}")
+        if(math.isclose(df(pPrevious), 0) == False):
+            pNext = pPrevious - (f(pPrevious) / df(pPrevious))
 
-            print(f"error: {numpy.abs(nextApprox - result)}\nprecision: {precision}\n{numpy.abs(nextApprox - result) < precision}")
-
-            if(numpy.abs(nextApprox - result) < precision):
+            if(numpy.abs(pNext - pPrevious) < precision):
                 return
             else:
                 iterations = iterations + 1
-                result = nextApprox
+                pPrevious = pNext
         else:
-            return f"Unsuccessful: f'(x) was 0 after {iterations} iterations\n"
+            print(f"Unsuccessful: f'(x) was 0 after {iterations} iterations\n")
+            return 
 
 #Approximation
 print(f"{ApproximationAlgorithm()}\n\n\n")
@@ -141,4 +140,4 @@ print(f"{Bisection(-4, 7, pow(10, -4))}\n\n\n")
 print(f"{FixedPointIteration()}\n\n\n")
 
 #Newton-Raphson
-NewtonRaphson(0.000001)
+NewtonRaphson()
