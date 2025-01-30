@@ -80,9 +80,7 @@ def FixedPointIteration():
 
     def g(x):
         return numpy.sqrt(10 - pow(x, 3)) / 2, numpy.sqrt(4)
-
-    # def g(x):
-    #    return x - x * x * x - 4 * x * x + 10, 1.5
+        #return x - x * x * x - 4 * x * x + 10, 1.5
 
     while(iterations <= maxIterations):
         p, pChecker = g(p0)
