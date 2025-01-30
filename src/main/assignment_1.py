@@ -108,7 +108,7 @@ def NewtonRaphson():
     #give a non-zero initial approximation
     pPrevious = numpy.pi / 4
     iterations = 0
-    precision = 0.00000000000000025
+    precision = 2 * pow(10, -16)
 
     def f(x):
         return numpy.cos(x) - x
